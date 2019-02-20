@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "button",
                 (elem) => {
                     elem.textContent = "Start Game";
-                    elem.onclick = onGameStartButtonClick.bind(document.gameState);
+                    elem.onclick = onGameStartButtonClick.bind(document.gameState); // make gameState available
                 }
             ]
         ],
@@ -19,25 +19,35 @@ document.addEventListener("DOMContentLoaded", () => {
  * @this {Object} gameState
  */
 function onGameStartButtonClick() {
-    const goodsForLocation = getGoods();
+    renderLocationView();
+}
+
+function renderLocationView(name, goods) {
+    if (typeof name !== "string") {
+        name = "nowhere";
+    }
+
+    if (!Array.isArray(goods)) {
+        goods = [...getGoods()];
+    }
 
     renderView(
         [
-            ...getStatus.call(this),
+            ...getStatusElements.call(this),
             ["br"],
-            ...getBuyGoodsButtons.call(this, goodsForLocation),
+            ...getBuyGoodsButtons.call(this, goods),
             ["br"],
             [
                 "button",
-                (elem) => {
+                (elem, gameState) => {
                     elem.textContent = "Show Inventory";
-                    elem.onclick = getShowInventoryClick.call(this);
+                    elem.onclick = getShowInventoryClick.call(gameState);
                 }
             ]
         ],
         (gameState) => {
-            gameState.location = "Location A";
-            gameState.locationGoods = goodsForLocation;
+            gameState.locationName = name;
+            gameState.locationGoods = goods;
         }
     );
 }
@@ -46,13 +56,13 @@ function onGameStartButtonClick() {
  * @this {Object} gameState
  */
 function getShowInventoryClick() {
-    const goods = this.hasOwnProperty("goods") ? this.goods : {};
-    const items = this.hasOwnProperty("items") ? this.items : {};
-
     return () => {
+        const goods = this.hasOwnProperty("goods") ? this.goods : {};
+        const items = this.hasOwnProperty("items") ? this.items : {};
+
         renderView(
             [
-                ...getStatus.apply(this),
+                ...getStatusElements.apply(this),
                 ["br"],
                 [
                     "h2",
@@ -64,9 +74,11 @@ function getShowInventoryClick() {
                 ...getItemList(items),
                 [
                     "button",
-                    (elem) => {
+                    (elem, gameState) => {
                         elem.textContent = "Back";
-                        elem.onclick = onGameStartButtonClick.bind(this);
+                        elem.onclick = () => {
+                            renderLocationView(gameState.locationName, gameState.locationGoods);
+                        };
                     }
                 ]
             ]
@@ -79,9 +91,9 @@ function getBuyGoodsButtons(goods) {
 
         acc.push([
             "button",
-            (elem) => {
+            (elem, gameState) => {
                 elem.textContent = `Buy ${good[0]} for ${good[1]}¤`;
-                elem.onclick = getOnBuyGoodClick.call(this, good);
+                elem.onclick = getOnBuyGoodClick.call(gameState, good);
             }
         ]);
 
@@ -136,10 +148,17 @@ function getItemList(items) {
     }, []);
 }
 
-function getOnBuyGoodClick(goodName) {
+function getOnBuyGoodClick(good) {
     return () => {
         if (!this.hasOwnProperty("goods")) {
             this.goods = {};
+        }
+
+        const goodName = good[0];
+        const goodPrice = good[1];
+
+        if (this.money < goodPrice) {
+            return;
         }
 
         if (this.goods.hasOwnProperty(goodName)) {
@@ -147,39 +166,43 @@ function getOnBuyGoodClick(goodName) {
         } else {
             this.goods[goodName] = 1;
         }
+
+        this.money -= goodPrice;
+
+        renderLocationView(this.locationName, this.locationGoods);
     };
 }
 
-function getStatus() {
-    return [
-        [
-            "span",
-            (elem) => {
-                elem.textContent = `You have ${this.money}¤`;
-            }
-        ],
-        ["br"],
-        [
-            "span",
-            (elem) => {
-                elem.textContent = `You are at ${this.location}.`;
-            }
-        ]
+function* getStatusElements() {
+    yield [
+        "span",
+        (elem, gameState) => {
+            elem.textContent = `You have ${gameState.money}¤`;
+        }
+    ];
+    yield ["br"];
+    yield [
+        "span",
+        (elem, gameState) => {
+            elem.textContent = `You are at ${gameState.locationName}.`;
+        }
     ];
 }
 
 // Game
 
-function getGoods() {
-    return [
-        [
-            "Drug A",
-            10
-        ],
-        [
-            "Drug B",
-            175
-        ]
+function* getGoods() {
+    yield [
+        "Drug A",
+        10
+    ];
+    yield [
+        "Drug B",
+        175
+    ];
+    yield [
+        "Drug Z",
+        "589642"
     ];
 }
 
@@ -218,14 +241,14 @@ function resetView() {
  *
  * @this {Object} gameState
  * @param {*} tagName
- * @param {*} attachProperties
+ * @param {(element:HTMLElement, gameState:{}) => void} attachProperties
  * @param {*} parent
  */
 function newElement(tagName, attachProperties, parent) {
     const element = document.createElement(tagName);
 
     if (typeof attachProperties === "function") {
-        attachProperties(element);
+        attachProperties.call(this, element, this);
     }
 
     if (!(parent instanceof Node)) {
