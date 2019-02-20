@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    newView(
+    renderView(
         [
             [
                 "button",
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function onGameStartButtonClick() {
     const goodsForLocation = getGoods();
 
-    newView(
+    renderView(
         [
             [
                 "span",
@@ -94,7 +94,7 @@ function getGoods() {
 
 // Utils
 
-function newView(newElementArgs, gameStateChange) {
+function renderView(newElementArgs, gameStateChange) {
     let that = this;
 
     resetView();
