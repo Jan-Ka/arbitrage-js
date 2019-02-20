@@ -29,21 +29,32 @@ function onGameStartButtonClick() {
                     elem.textContent = `You have ${this.money}¤`;
                 }
             ],
+            ["br"],
             [
                 "span",
                 (elem) => {
                     elem.textContent = `You are at ${this.location}.`;
                 }
             ],
-            ...goodsForLocation.map((good) => {
-                return [
+            ["br"],
+            ...goodsForLocation.reduce((acc, good, i, ar) => {
+
+                acc.push([
                     "button",
                     (elem) => {
                         elem.textContent = `Buy ${good[0]} for ${good[1]}¤`;
                         elem.onclick = getOnBuyGoodClick.apply(this, good);
                     }
-                ];
-            })
+                ]);
+
+                if(i < ar.length - 1) {
+                    acc.push(["br"]);
+                }
+
+
+                return acc;
+                // return ;
+            }, [])
         ],
         (gameState) => {
             gameState.location = "Location A";
