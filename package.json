@@ -15,5 +15,8 @@
     "bugs": {
         "url": "https://github.com/Jan-Ka/arbitrage-js/issues"
     },
-    "homepage": "https://github.com/Jan-Ka/arbitrage-js#readme"
+    "homepage": "https://github.com/Jan-Ka/arbitrage-js#readme",
+    "devDependencies": {
+        "eslint": "^5.14.1"
+    }
 }
