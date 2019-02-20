@@ -1,0 +1,19 @@
+{
+    "name": "arbitragejs",
+    "version": "1.0.0",
+    "description": "A Drugwars Clone",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Jan-Ka/arbitrage-js.git"
+    },
+    "author": "Jan Ka",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Jan-Ka/arbitrage-js/issues"
+    },
+    "homepage": "https://github.com/Jan-Ka/arbitrage-js#readme"
+}
