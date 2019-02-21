@@ -89,13 +89,28 @@ function getShowInventoryClick() {
 function getBuyGoodsButtons(goods) {
     return goods.reduce((acc, good, i, arr) => {
 
-        acc.push([
-            "button",
-            (elem, gameState) => {
-                elem.textContent = `Buy ${good[0]} for ${good[1]}¤`;
-                elem.onclick = getOnBuyGoodClick.call(gameState, good);
-            }
-        ]);
+        acc.push(
+            [
+                "span",
+                (elem) => {
+                    elem.textContent = good[0];
+                }
+            ],
+            [
+                "button",
+                (elem, gameState) => {
+                    elem.textContent = `Buy for ${good[1]}¤`;
+                    elem.onclick = getOnBuyGoodClick.call(gameState, good);
+                }
+            ],
+            [
+                "button",
+                (elem, gameState) => {
+                    elem.textContent = `Sell for ${good[1]}¤`;
+                    elem.onclick = getOnSellGoodClick.call(gameState, good);
+                }
+            ]
+        );
 
         if (i < arr.length - 1) {
             acc.push(["br"]);
@@ -168,6 +183,29 @@ function getOnBuyGoodClick(good) {
         }
 
         this.money -= goodPrice;
+
+        renderLocationView(this.locationName, this.locationGoods);
+    };
+}
+
+function getOnSellGoodClick(good) {
+    return () => {
+        if (!this.hasOwnProperty("goods")) {
+            this.goods = {};
+        }
+
+        const goodName = good[0];
+        const goodPrice = good[1];
+
+        if (this.goods.hasOwnProperty(goodName)) {
+            if (this.goods[goodName] > 1) {
+                this.goods[goodName] -= 1;
+            } else {
+                delete this.goods[goodName];
+            }
+
+            this.money += goodPrice;
+        }
 
         renderLocationView(this.locationName, this.locationGoods);
     };
