@@ -2,6 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
     renderView(
         [
             [
+                "h1",
+                (elem) => {
+                    elem.textContent = "Arbitrage.js";
+                }
+            ],
+            ["br"],
+            [
                 "button",
                 (elem) => {
                     elem.textContent = "Start Game";
