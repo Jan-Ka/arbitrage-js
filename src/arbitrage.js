@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 document.addEventListener("DOMContentLoaded", () => {
     renderView(
         [
