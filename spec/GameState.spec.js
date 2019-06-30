@@ -11,21 +11,14 @@ describe("GameState", () => {
         it("has a getter", () => {
             const gameState = new GameState();
 
-            expect(gameState.DaysLeft).toBeDefined();
+            expect("DaysLeft" in gameState).toBeTruthy();
         });
 
-        it("are a number", () => {
+        it("new state returns null as days left", () => {
             const gameState = new GameState();
             const daysLeft = gameState.DaysLeft;
 
-            expect(typeof (daysLeft)).toBe("number");
-        });
-
-        it("are only increased when a new game starts", () => {
-            const gameState = new GameState();
-            const daysLeft = gameState.DaysLeft;
-
-            expect(daysLeft).toBe(30);
+            expect(daysLeft).toBe(null);
         });
     });
 

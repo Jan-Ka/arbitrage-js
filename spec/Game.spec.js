@@ -28,5 +28,14 @@ describe("Game", () => {
 
             expect(gameState instanceof GameState).toBeTruthy("Game.State is not instance of GameState");
         });
+
+        it("days left are only increased when a new game starts", () => {
+            const game = new Game();
+            game.new();
+            const gameState = game.State;
+            const daysLeft = gameState.DaysLeft;
+
+            expect(daysLeft).toBe(30);
+        });
     });
 });
