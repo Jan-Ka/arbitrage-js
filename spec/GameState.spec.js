@@ -7,6 +7,16 @@ describe("GameState", () => {
         expect(gameState).toBeDefined();
     });
 
+    describe("from", () => {
+        it("is a static member", () => {
+            expect(typeof (GameState.from)).toBe("function", "GameState proto missing static from");
+        });
+
+        it("requires a previous state", () => {
+            expect(GameState.from).toThrow();
+        });
+    });
+
     describe("Days", () => {
         it("has a getter", () => {
             const gameState = new GameState();

@@ -11,7 +11,11 @@ export default class Game {
         this.state = null;
     }
 
-    new() {
+    start() {
         this.state = new GameState(30);
+    }
+
+    next() {
+
     }
 }
