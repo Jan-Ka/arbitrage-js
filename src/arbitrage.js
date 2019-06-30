@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
         [
             [
                 "h1",
-                (elem) => {
-                    elem.textContent = "Arbitrage.js";
-                }
+                "Arbitrage.js"
             ],
             ["br"],
             [
@@ -17,16 +15,72 @@ document.addEventListener("DOMContentLoaded", () => {
             ]
         ],
         (gameState) => {
+            gameState.daysLeft = 30;
             gameState.money = 20000;
+
+            setupLocationsAndDistances(gameState);
         }
     );
 });
+
+function setupLocationsAndDistances(gameState) {
+    gameState.locations = new Graph();
+    const locations = [
+        "Brooklyn",
+        "Manhatten",
+        "Queens",
+        "Staten Island",
+        "The Bronx"
+    ];
+
+    for (const location of locations) {
+        gameState.locations.addVertex(location);
+    }
+
+    gameState.locations.addEdge("Brooklyn", "Manhatten");
+    gameState.locations.addEdge("Brooklyn", "Queens");
+    gameState.locations.addEdge("Brooklyn", "Staten Island");
+
+    gameState.locations.addEdge("Manhatten", "Queens");
+    gameState.locations.addEdge("Manhatten", "The Bronx");
+    gameState.locations.addEdge("Manhatten", "Staten Island");
+}
+
+class Graph {
+    constructor() {
+        this.AdjList = new Map();
+    }
+
+    addVertex(vertex) {
+        this.AdjList.set(vertex, []);
+    }
+
+    addEdge(source, target, cost) {
+        this.AdjList.get(source).push(target);
+        this.AdjList.get(target).push(source);
+    }
+
+    getEdges() {
+        const keys = this.AdjList.keys();
+
+        for (const i of keys) {
+            const values = this.AdjList.get(i);
+            let path = "";
+
+            for (const j of values) {
+
+            }
+        }
+    }
+}
 
 /**
  * @this {Object} gameState
  */
 function onGameStartButtonClick() {
-    renderLocationView();
+    const locationIndex = Math.floor(Math.random() * Math.floor(this.locations.length - 1));
+
+    renderLocationView(this.locations[locationIndex]);
 }
 
 function renderLocationView(name, wares) {
@@ -41,6 +95,7 @@ function renderLocationView(name, wares) {
     renderView(
         [
             ...getStatusElements.call(this),
+            ["hr"],
             ["br"],
             ...getBuyGoodsButtons.call(this, wares),
             ["br"],
@@ -49,6 +104,14 @@ function renderLocationView(name, wares) {
                 (elem, gameState) => {
                     elem.textContent = "Show Inventory";
                     elem.onclick = getShowInventoryClick.call(gameState);
+                }
+            ],
+            ["br"],
+            [
+                "button",
+                (elem, gameState) => {
+                    elem.textContent = "Take a Cab";
+                    elem.onclick = getCabClick.call(gameState);
                 }
             ]
         ],
@@ -70,12 +133,11 @@ function getShowInventoryClick() {
         renderView(
             [
                 ...getStatusElements.apply(this),
+                ["hr"],
                 ["br"],
                 [
                     "h2",
-                    (elem) => {
-                        elem.textContent = "Wares";
-                    }
+                    "Wares"
                 ],
                 ...getWaresList(wares),
                 ...getItemList(items),
@@ -88,6 +150,26 @@ function getShowInventoryClick() {
                         };
                     }
                 ]
+            ]
+        );
+    };
+}
+
+function getCabClick() {
+    const locations = this.hasOwnProperty("locations") ? this.locations : {};
+
+    return () => {
+        renderView(
+            [
+                ...getStatusElements.apply(this),
+                ["hr"],
+                ["br"],
+                [
+                    "h2",
+                    "Take a Cab"
+                ],
+                ["br"],
+                ...getLocationsList(locations),
             ]
         );
     };
@@ -158,6 +240,25 @@ function getItemList(items) {
                 "span",
                 (elem) => {
                     elem.textContent = `${itemsCount} x ${itemsKey}`;
+                }
+            ]
+        );
+
+        if (i < arr.length) {
+            acc.push(["br"]);
+        }
+
+        return acc;
+    }, []);
+}
+
+function getLocationsList(locations) {
+    return locations.reduce((acc, locationKey, i, arr) => {
+        acc.push(
+            [
+                "button",
+                (elem) => {
+                    elem.textContent = `To ${locationKey} for`;
                 }
             ]
         );
@@ -274,6 +375,13 @@ function* getStatusElements() {
     yield [
         "span",
         (elem, gameState) => {
+            elem.textContent = `You have ${gameState.daysLeft} Days left`;
+        }
+    ];
+    yield ["br"];
+    yield [
+        "span",
+        (elem, gameState) => {
             elem.textContent = `You have ${gameState.money}¤`;
         }
     ];
@@ -281,7 +389,7 @@ function* getStatusElements() {
     yield [
         "span",
         (elem, gameState) => {
-            elem.textContent = `You are at ${gameState.locationName}.`;
+            elem.textContent = `You are in ${gameState.locationName}.`;
         }
     ];
 }
@@ -338,7 +446,7 @@ function resetView() {
  *
  * @this {Object} gameState
  * @param {*} tagName
- * @param {(element:HTMLElement, gameState:{}) => void} attachProperties
+ * @param {(element:HTMLElement, gameState:{}) => void | string} attachProperties If string will set textContent of element only
  * @param {*} parent
  */
 function newElement(tagName, attachProperties, parent) {
@@ -346,6 +454,8 @@ function newElement(tagName, attachProperties, parent) {
 
     if (typeof attachProperties === "function") {
         attachProperties.call(this, element, this);
+    } else if (typeof attachProperties === "string") {
+        element.textContent = attachProperties;
     }
 
     if (!(parent instanceof Node)) {
