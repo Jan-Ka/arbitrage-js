@@ -1,15 +1,17 @@
-import GameState from "../src/GameState";
+import GameState from "./GameState";
+// import { isNullOrUndefined } from "./Validation";
 
 export default class Game {
+
+    get State() {
+        return this.state;
+    }
+
     constructor() {
         this.state = null;
     }
 
-    get State() {
-        if (this.state == null) {
-            this.state = new GameState();
-        }
-
-        return this.state;
+    new() {
+        this.state = new GameState(30);
     }
 }
