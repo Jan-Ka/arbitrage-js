@@ -4,7 +4,7 @@
     "description": "A Drugwars Clone",
     "main": "index.js",
     "scripts": {
-        "test": "jasmine --reporter=jasmine-console-reporter --verbosity=1"
+        "test": "jasmine --reporter=jasmine-terminal-reporter"
     },
     "repository": {
         "type": "git",
@@ -20,6 +20,6 @@
         "eslint": "^6.0.1",
         "esm": "^3.2.25",
         "jasmine": "^3.4.0",
-        "jasmine-console-reporter": "^3.1.0"
+        "jasmine-terminal-reporter": "^1.0.3"
     }
 }
