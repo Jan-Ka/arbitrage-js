@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "../src/Validation";
+import { isNullOrUndefined, isEmpty } from "../src/Validation";
 
 describe("Validation", () => {
     describe("isNullOrUndefined", () => {
@@ -25,6 +25,32 @@ describe("Validation", () => {
 
         it("returns false on empty string", () => {
             expect(isNullOrUndefined("")).toBeFalsy();
+        });
+    });
+
+    describe("isEmpty", () => {
+        it("is statically available from Validation", () => {
+            expect(isEmpty).toBeDefined();
+        });
+
+        it("returns false on undefined", () => {
+            expect(isEmpty(undefined)).toBeFalsy();
+        });
+
+        it("returns false on null", () => {
+            expect(isEmpty(null)).toBeFalsy();
+        });
+
+        it("returns true on empty string", () => {
+            expect(isEmpty("")).toBeTruthy();
+        });
+
+        it("returns false on whitespace string", () => {
+            expect(isEmpty("    ")).toBeFalsy();
+        });
+
+        it("returns true on empty array", () => {
+            expect(isEmpty([])).toBeTruthy();
         });
     });
 });
