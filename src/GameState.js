@@ -1,4 +1,5 @@
 import { isNullOrUndefined } from "./Validation";
+import Locations from "./Locations";
 
 export default class GameState {
     get DaysLeft() {
@@ -6,7 +7,11 @@ export default class GameState {
     }
 
     get Locations() {
-        return [];
+        if(isNullOrUndefined(this.locations)) {
+            this.locations = new Locations();
+        }
+
+        return this.locations;
     }
 
     constructor(daysLeft) {

@@ -1,5 +1,5 @@
 import GameState from "../src/GameState.js";
-import {isEmpty} from "../src/Validation";
+import { isEmpty } from "../src/Validation";
 
 describe("GameState", () => {
     it("has a Handler Class", () => {
@@ -38,13 +38,6 @@ describe("GameState", () => {
             const gameState = new GameState();
 
             expect("Locations" in gameState).toBeTruthy();
-        });
-
-        it("in new state returns an empty array", () => {
-            const gameState = new GameState();
-            const locations = gameState.Locations;
-
-            expect(isEmpty(locations)).toBeTruthy();
         });
     });
 

@@ -11,7 +11,7 @@ describe("Game", () => {
     it("can start new", () => {
         const game = new Game();
 
-        expect(game.start).toBeDefined();
+        expect(game.start).not.toThrow();
     });
 
     it("can advance state", () => {
@@ -33,6 +33,15 @@ describe("Game", () => {
             const gameState = game.State;
 
             expect(gameState instanceof GameState).toBeTruthy("Game.State is not instance of GameState");
+        });
+    });
+
+    describe("Location", () => {
+        it("current is available", () => {
+            const game = new Game();
+            game.start();
+
+            expect("Current" in game.State.Locations).toBeTruthy();
         });
     });
 });
