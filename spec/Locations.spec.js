@@ -14,6 +14,31 @@ describe("Locations", () => {
         expect(Array.isArray(locations.All)).toBeTruthy();
     });
 
+    describe("first", () => {
+
+        it("retrieve specifc via name", () => {
+            const testLocationName = "Loc";
+
+            const expectedLocations = [
+                testLocationName,
+                "LocB"
+            ];
+
+            const locations = new Locations(expectedLocations);
+            const location = locations.first(testLocationName);
+
+            expect(location.Name).toBe(testLocationName);
+        });
+
+        it("returns undefined if specific not found", () => {
+
+            const locations = new Locations(["test"]);
+
+            expect(locations.first("loc")).toBeUndefined();
+        });
+
+    });
+
     it("allows to retrieve all available Locations", () => {
         const expectedLocations = [
             "LocA",

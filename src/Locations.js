@@ -9,13 +9,21 @@ export default class Locations {
         return this.locations;
     }
 
+    get Current() {
+        return null;
+    }
+
     constructor(locations) {
         const rawLocations = isNullOrUndefined(locations) || !Array.isArray(locations) ? [] : locations;
 
         this.locations = rawLocations.map((rawLocation) => {
-            if(typeof(rawLocation) === "string") {
+            if (typeof (rawLocation) === "string") {
                 return new Location(rawLocation);
             }
         });
+    }
+
+    first(name) {
+        return this.locations.find((location) => location.Name === name);
     }
 }
