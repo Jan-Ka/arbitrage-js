@@ -4,7 +4,8 @@
     "description": "A Drugwars Clone",
     "main": "index.js",
     "scripts": {
-        "test": "jasmine --reporter=jasmine-terminal-reporter"
+        "test": "jasmine --reporter=jasmine-terminal-reporter",
+        "testGame": "jasmine spec/Playing.spec.js --reporter=jasmine-terminal-reporter --random=false"
     },
     "repository": {
         "type": "git",

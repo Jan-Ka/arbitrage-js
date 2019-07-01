@@ -34,14 +34,5 @@ describe("Game", () => {
 
             expect(gameState instanceof GameState).toBeTruthy("Game.State is not instance of GameState");
         });
-
-        it("is initialized with 30 days", () => {
-            const game = new Game();
-            game.start();
-            const gameState = game.State;
-            const daysLeft = gameState.DaysLeft;
-
-            expect(daysLeft).toBe(30);
-        });
     });
 });

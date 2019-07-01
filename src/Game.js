@@ -9,6 +9,8 @@ export default class Game {
 
     constructor() {
         this.state = null;
+
+        this.start = this.start.bind(this);
     }
 
     start() {
