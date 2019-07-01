@@ -43,16 +43,5 @@ describe("Game", () => {
 
             expect(daysLeft).toBe(30);
         });
-
-        describe("Advancing", () => {
-            it("decreases days", () => {
-                const game = new Game();
-                game.start();
-                game.next();
-                const daysLeft = game.State.DaysLeft;
-
-                expect(daysLeft).toBe(29);
-            });
-        });
     });
 });
