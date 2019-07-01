@@ -35,20 +35,4 @@ describe("Game", () => {
             expect(gameState instanceof GameState).toBeTruthy("Game.State is not instance of GameState");
         });
     });
-
-    describe("Location", () => {
-        it("Current is available", () => {
-            const game = new Game();
-            game.start();
-
-            expect("Current" in game.State.Locations).toBeTruthy();
-        });
-
-        it("Current returns null if no Location is set as Current", () => {
-            const game = new Game();
-            game.start();
-
-            expect(game.State.Locations.Current).toBe(null);
-        });
-    });
 });

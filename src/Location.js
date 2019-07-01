@@ -6,6 +6,18 @@ export default class Location {
         return this.name;
     }
 
+    get IsCurrent() {
+        if (isNullOrUndefined(this.current)) {
+            this.current = false;
+        }
+
+        return this.current;
+    }
+
+    set IsCurrent(x) {
+        this.current = x;
+    }
+
     constructor(name) {
         if (isNullOrUndefined(name) || isEmpty(name)) {
             throw new Error("Location needs a Name");

@@ -1,5 +1,4 @@
 import GameState from "../src/GameState.js";
-import { isEmpty } from "../src/Validation";
 
 describe("GameState", () => {
     it("has a Handler Class", () => {

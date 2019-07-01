@@ -48,4 +48,23 @@ describe("Location", () => {
             expect(locA.equals(locB)).toBeTruthy();
         });
     });
+
+    it("has a Current Location Flag", () => {
+        const locA = new Location("Loc");
+
+        expect("IsCurrent" in locA).toBeTruthy();
+    });
+
+    it("is set to not Current Location by default", () => {
+        const locA = new Location("Loc");
+
+        expect(locA.IsCurrent).toBeFalsy();
+    });
+
+    it("can be flagged as current Location", () => {
+        const locA = new Location("Loc");
+        locA.IsCurrent = true;
+
+        expect(locA.IsCurrent).toBeTruthy();
+    });
 });

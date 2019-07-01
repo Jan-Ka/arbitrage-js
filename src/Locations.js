@@ -10,7 +10,7 @@ export default class Locations {
     }
 
     get Current() {
-        return null;
+        return this.locations.find((location) => location.IsCurrent);
     }
 
     constructor(locations) {
@@ -23,7 +23,7 @@ export default class Locations {
         });
     }
 
-    first(name) {
+    findByName(name) {
         return this.locations.find((location) => location.Name === name);
     }
 }
