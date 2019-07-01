@@ -16,5 +16,9 @@ describe("Playing", () => {
         it("does start with 30 days left", () => {
             expect(this.game.State.DaysLeft).toBe(30);
         });
+
+        it("has locations to travel to", () => {
+            expect(this.game.State.Locations.length).toBeGreaterThan(0);
+        });
     });
 });

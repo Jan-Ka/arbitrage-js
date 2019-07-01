@@ -24,7 +24,7 @@ describe("Game", () => {
         it("is available", () => {
             const game = new Game();
 
-            expect(game.State).toBeDefined();
+            expect("State" in game).toBeTruthy();
         });
 
         it("is of Type GameState", () => {

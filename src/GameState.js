@@ -5,6 +5,10 @@ export default class GameState {
         return this.daysLeft;
     }
 
+    get Locations() {
+        return [];
+    }
+
     constructor(daysLeft) {
         this.daysLeft = isNullOrUndefined(daysLeft) ? null : daysLeft;
     }

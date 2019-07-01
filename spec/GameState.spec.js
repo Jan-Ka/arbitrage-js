@@ -1,4 +1,5 @@
 import GameState from "../src/GameState.js";
+import {isEmpty} from "../src/Validation";
 
 describe("GameState", () => {
     it("has a Handler Class", () => {
@@ -24,11 +25,26 @@ describe("GameState", () => {
             expect("DaysLeft" in gameState).toBeTruthy();
         });
 
-        it("new state returns null as days left", () => {
+        it("in new state returns null as days left", () => {
             const gameState = new GameState();
             const daysLeft = gameState.DaysLeft;
 
             expect(daysLeft).toBe(null);
+        });
+    });
+
+    describe("Locations", () => {
+        it("has a getter", () => {
+            const gameState = new GameState();
+
+            expect("Locations" in gameState).toBeTruthy();
+        });
+
+        it("in new state returns an empty array", () => {
+            const gameState = new GameState();
+            const locations = gameState.Locations;
+
+            expect(isEmpty(locations)).toBeTruthy();
         });
     });
 
