@@ -69,10 +69,10 @@ describe("Location", () => {
             expect(locA.IsCurrent).toBeTruthy();
         });
 
-        it("has an OnChangeCurrent Event", () => {
+        it("has an OnIsCurrentChangedEventListener Event", () => {
             const locA = new Location("Loc");
 
-            expect("OnChangeCurrentEventListener" in locA).toBeTruthy();
+            expect("OnIsCurrentChangedEventListener" in locA).toBeTruthy();
         });
 
         it("triggers OnChangeCurrent Event on Flag change", () => {
@@ -82,7 +82,7 @@ describe("Location", () => {
 
             spyOn(observer, "callback");
 
-            locA.OnChangeCurrentEventListener = () => {
+            locA.OnIsCurrentChangedEventListener = () => {
                 observer.callback();
             };
 

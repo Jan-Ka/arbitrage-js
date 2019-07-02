@@ -25,7 +25,7 @@ export default class Location extends Reactor {
         }
     }
 
-    set OnChangeCurrentEventListener(newListener) {
+    set OnIsCurrentChangedEventListener(newListener) {
         this.addEventListener(OnChangeCurrentEventListenerEventName, newListener);
         this.hasEventListeners = true;
     }

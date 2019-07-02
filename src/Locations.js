@@ -16,11 +16,21 @@ export default class Locations {
     constructor(locations) {
         const rawLocations = isNullOrUndefined(locations) || !Array.isArray(locations) ? [] : locations;
 
-        this.locations = rawLocations.map((rawLocation) => {
-            if (typeof (rawLocation) === "string") {
-                return new Location(rawLocation);
-            }
-        });
+        this.locations = [];
+
+        for (const rawLocation of rawLocations) {
+            const newLocation = new Location(rawLocation);
+
+            newLocation.OnIsCurrentChangedEventListener = () => {
+                const allIsCurrent = this.locations.filter((location) => location.IsCurrent);
+
+                if(allIsCurrent.length > 1) {
+                    throw new Error("Only one Location can be Current");
+                }
+            };
+
+            this.locations.push(newLocation);
+        }
     }
 
     findByName(name) {
