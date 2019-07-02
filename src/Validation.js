@@ -19,14 +19,23 @@ function isEmpty(x) {
         return false;
     }
 
-    if(x.length > 0) {
+    if (x.length > 0) {
         return false;
     }
 
     return true;
 }
 
+function isNullOrWhitespace(x) {
+    if (isNullOrUndefined(x)) {
+        return true;
+    }
+
+    return isEmpty(x);
+}
+
 export {
     isNullOrUndefined,
-    isEmpty
+    isEmpty,
+    isNullOrWhitespace
 };
