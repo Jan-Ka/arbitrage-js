@@ -49,22 +49,47 @@ describe("Location", () => {
         });
     });
 
-    it("has a Current Location Flag", () => {
-        const locA = new Location("Loc");
+    describe("Current", () => {
+        it("has a Flag", () => {
+            const locA = new Location("Loc");
 
-        expect("IsCurrent" in locA).toBeTruthy();
-    });
+            expect("IsCurrent" in locA).toBeTruthy();
+        });
 
-    it("is set to not Current Location by default", () => {
-        const locA = new Location("Loc");
+        it("Flag is set to false by default", () => {
+            const locA = new Location("Loc");
 
-        expect(locA.IsCurrent).toBeFalsy();
-    });
+            expect(locA.IsCurrent).toBeFalsy();
+        });
 
-    it("can be flagged as current Location", () => {
-        const locA = new Location("Loc");
-        locA.IsCurrent = true;
+        it("can be set to true", () => {
+            const locA = new Location("Loc");
+            locA.IsCurrent = true;
 
-        expect(locA.IsCurrent).toBeTruthy();
+            expect(locA.IsCurrent).toBeTruthy();
+        });
+
+        it("has an OnChangeCurrent Event", () => {
+            const locA = new Location("Loc");
+
+            expect("OnChangeCurrentEventListener" in locA).toBeTruthy();
+        });
+
+        it("triggers OnChangeCurrent Event on Flag change", () => {
+            const locA = new Location("Loc");
+
+            const observer = { callback: () => {}};
+
+            spyOn(observer, "callback");
+
+            locA.OnChangeCurrentEventListener = () => {
+                observer.callback();
+            };
+
+            locA.IsCurrent = true;
+
+            expect(observer.callback).toHaveBeenCalled();
+
+        });
     });
 });

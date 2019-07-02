@@ -18,6 +18,9 @@ export default class Location {
         this.current = x;
     }
 
+    set OnChangeCurrentEventListener(newListener) {
+    }
+
     constructor(name) {
         if (isNullOrUndefined(name) || isEmpty(name)) {
             throw new Error("Location needs a Name");
