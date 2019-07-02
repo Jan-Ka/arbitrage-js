@@ -78,7 +78,7 @@ describe("Location", () => {
         it("triggers OnChangeCurrent Event on Flag change", () => {
             const locA = new Location("Loc");
 
-            const observer = { callback: () => {}};
+            const observer = { callback: () => { } };
 
             spyOn(observer, "callback");
 

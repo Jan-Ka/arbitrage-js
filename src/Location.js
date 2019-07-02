@@ -1,7 +1,10 @@
 import { hashWithDjb2 } from "./Utilities";
 import { isNullOrUndefined, isEmpty } from "./Validation";
+import Reactor from "./Reactor";
 
-export default class Location {
+const OnChangeCurrentEventListenerEventName = "OnChangeCurrentEventListener";
+
+export default class Location extends Reactor {
     get Name() {
         return this.name;
     }
@@ -16,12 +19,23 @@ export default class Location {
 
     set IsCurrent(x) {
         this.current = x;
+
+        if (this.hasEventListeners) {
+            this.dispatchEvent(OnChangeCurrentEventListenerEventName);
+        }
     }
 
     set OnChangeCurrentEventListener(newListener) {
+        this.addEventListener(OnChangeCurrentEventListenerEventName, newListener);
+        this.hasEventListeners = true;
     }
 
     constructor(name) {
+        super();
+
+        this.registerEvent(OnChangeCurrentEventListenerEventName);
+        this.hasEventListeners = false;
+
         if (isNullOrUndefined(name) || isEmpty(name)) {
             throw new Error("Location needs a Name");
         }
