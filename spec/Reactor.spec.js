@@ -13,7 +13,7 @@ describe("Reactor", () => {
         it("has registerEvent instance method", () => {
             const reactor = new Reactor();
 
-            expect(typeof(reactor.registerEvent)).toBe("function");
+            expect(typeof (reactor.registerEvent)).toBe("function");
         });
 
         describe("Registration", () => {
@@ -54,6 +54,62 @@ describe("Reactor", () => {
             const reactor = new Reactor();
 
             expect(reactor.addEventListener.bind(null, "test", () => { })).toThrow();
+        });
+    });
+
+    describe("Dispatch", () => {
+        it("has dispatchEvent instance method", () => {
+            const reactor = new Reactor();
+
+            expect(typeof (reactor.dispatchEvent)).toBe("function");
+        });
+
+        it("throws error when trying to dispatch non registered event", () => {
+            const reactor = new Reactor();
+            expect(reactor.dispatchEvent.bind(null, "test")).toThrow();
+        });
+
+        it("throws an error dispatching event without listeners", () => {
+            const reactor = new Reactor();
+            const eventName = "test";
+
+            reactor.registerEvent(eventName);
+
+            expect(reactor.dispatchEvent.bind(null, eventName)).toThrow();
+        });
+
+        it("can dispatch events", () => {
+            const reactor = new Reactor();
+            const eventName = "test";
+
+            reactor.registerEvent(eventName);
+
+            const observer = { callback: () => { } };
+
+            spyOn(observer, "callback");
+
+            reactor.addEventListener(eventName, () => {
+                observer.callback();
+            });
+
+            reactor.dispatchEvent(eventName);
+
+            expect(observer.callback).toHaveBeenCalled();
+        });
+
+        it("can dispatch events with eventArgs", (done) => {
+            const reactor = new Reactor();
+            const eventName = "test";
+            const testArgs = "testArgs";
+
+            reactor.registerEvent(eventName);
+
+            reactor.addEventListener(eventName, (eventArgs) => {
+                expect(eventArgs).toBe(testArgs);
+                done();
+            });
+
+            reactor.dispatchEvent(eventName, testArgs);
         });
     });
 });

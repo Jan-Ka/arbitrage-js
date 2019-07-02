@@ -89,7 +89,6 @@ describe("Location", () => {
             locA.IsCurrent = true;
 
             expect(observer.callback).toHaveBeenCalled();
-
         });
     });
 });
